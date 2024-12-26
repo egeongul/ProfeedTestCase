@@ -7,7 +7,6 @@ import com.testCase.testCase.Repository.CurrencyRepo;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -79,11 +78,10 @@ public class MainController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
             String hourAndMinutes = now.format(formatter);
 
-            String baseCurrency = response.getBase();
             Map<String, Double> rates = response.getRates();
 
-            Double rateEUR_TO_TRY = 0.0;
-            Double rateEUR_TO_USD = 0.0;
+            double rateEUR_TO_TRY = 0.0;
+            double rateEUR_TO_USD = 0.0;
 
             for (Map.Entry<String, Double> entry : rates.entrySet()) {
                 String targetCurrency = entry.getKey();
@@ -133,7 +131,7 @@ public class MainController {
     }
 
 
-    @Scheduled(fixedRate = 450000, initialDelay = 450000) // 3600000ms = 1 hour (left it at 9 to easliy see)
+    @Scheduled(fixedRate = 900000, initialDelay = 900000) // 3600000ms = 1 hour (left it at 9 to easliy see ~ 15 minutes)
     public void fetchCurrenciesAtIntervals() {
         System.out.println("scheduled runned");
         fetchCurrencies(apiUrl, accessKey);
